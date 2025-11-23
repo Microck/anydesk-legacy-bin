@@ -1,11 +1,13 @@
 # Maintainer: Microck <contact@micr.dev>
+# Project Page: https://github.com/Microck/anydesk-legacy-bin
+
 pkgname=anydesk-legacy-bin
 pkgver=6.0.1
 pkgrel=2
 pkgdesc="Legacy AnyDesk 6.0.1. Stable version without commercial use nags or timeouts."
 arch=('x86_64')
 url="https://www.anydesk.com"
-license=('custom:AnyDesk')
+license=('custom')
 
 depends=('gtk2' 'gtkglext' 'glu' 'cairo' 'fontconfig' 'freetype2' 
          'gdk-pixbuf2' 'glib2' 'libglvnd' 'libice' 'libsm' 
