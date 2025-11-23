@@ -11,7 +11,7 @@ depends=('gtk2' 'gtkglext' 'glu' 'cairo' 'fontconfig' 'freetype2'
          'gdk-pixbuf2' 'glib2' 'libglvnd' 'libice' 'libsm' 
          'libx11' 'libxtst' 'pango' 'pangox-compat' 'lsb-release' 'polkit')
 
-optdepends=('xdg-utils: for desktop integration')
+optdepends=('xdg-utils: for desktop integration'
             'gtk-engine-murrine: fixes GTK theme warnings and improves look')
 
 conflicts=('anydesk' 'anydesk-bin')
