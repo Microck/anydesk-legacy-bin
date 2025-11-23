@@ -1,7 +1,7 @@
 # Maintainer: Microck <contact@micr.dev>
 pkgname=anydesk-legacy-bin
 pkgver=6.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Legacy AnyDesk 6.0.1. Stable version without commercial use nags or timeouts."
 arch=('x86_64')
 url="https://www.anydesk.com"
@@ -9,9 +9,10 @@ license=('custom:AnyDesk')
 
 depends=('gtk2' 'gtkglext' 'glu' 'cairo' 'fontconfig' 'freetype2' 
          'gdk-pixbuf2' 'glib2' 'libglvnd' 'libice' 'libsm' 
-         'libx11' 'libxtst' 'pango' 'lsb-release' 'polkit')
+         'libx11' 'libxtst' 'pango' 'pangox-compat' 'lsb-release' 'polkit')
 
 optdepends=('xdg-utils: for desktop integration')
+            'gtk-engine-murrine: fixes GTK theme warnings and improves look')
 
 conflicts=('anydesk' 'anydesk-bin')
 provides=('anydesk')
