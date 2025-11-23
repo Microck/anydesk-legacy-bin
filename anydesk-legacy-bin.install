@@ -1,0 +1,81 @@
+pre_install() {
+
+
+			INITSYS=$(ls -al /proc/1/exe | awk -F' ' '{print $NF}' | awk -F'/' '{print $NF}')
+			if [ "systemd" == "${INITSYS}" ]; then
+				service anydesk stop || true
+	 		elif [ "init" == "${INITSYS}" ]; then
+				/etc/init.d/anydesk stop || true
+			fi
+
+}
+
+post_install() {
+	gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
+
+
+	if [ "$1" = configure ]; then
+
+		INITSYS=$(ls -al /proc/1/exe | awk -F' ' '{print $NF}' | awk -F'/' '{print $NF}')
+
+		if [ "systemd" == "$INITSYS" ]; then
+			if [ -e /etc/systemd/system/anydesk.service ]; then
+				rm /etc/systemd/system/anydesk.service
+			fi
+			cp /usr/share/anydesk/files/systemd/anydesk.service /etc/systemd/system/anydesk.service
+			systemctl daemon-reload
+			systemctl enable anydesk
+			systemctl start anydesk
+		elif [ "init" == "$INITSYS" ]; then
+			if [ -e /etc/init.d/anydesk ]; then
+				rm /etc/init.d/anydesk
+			fi
+			chmod +x /usr/share/anydesk/files/init/anydesk
+			ln -s /usr/share/anydesk/files/init/anydesk /etc/init.d/anydesk
+			update-rc.d anydesk defaults
+			/etc/init.d/anydesk start
+		fi
+		if [ -x /usr/bin/update-mime-database usr/share/mime &> /dev/null ]; then
+			/usr/bin/update-mime-database usr/share/mime &> /dev/null > /dev/null 2>&1 || true
+		fi
+
+		if [ -x /usr/bin/update-desktop-database ]; then
+			/usr/bin/update-desktop-database > /dev/null 2>&1 || true
+		fi
+
+		if [ -x /usr/bin/xdg-desktop-menu ]; then
+			/usr/bin/xdg-desktop-menu forceupdate > /dev/null 2>&1 || true
+		fi
+	fi
+	update-desktop-database -q
+}
+
+pre_upgrade() {
+	pre_install
+}
+
+post_upgrade() {
+	post_install
+}
+
+pre_remove() {
+
+
+			INITSYS=$(ls -al /proc/1/exe | awk -F' ' '{print $NF}' | awk -F'/' '{print $NF}')
+			if [ "systemd" == "${INITSYS}" ]; then
+				systemctl start anydesk || true
+				systemctl disable anydesk || true
+				rm /etc/systemd/system/anydesk.service || true
+	 		elif [ "init" == "${INITSYS}" ]; then
+				/etc/init.d/anydesk stop || true
+				unlink /etc/init.d/anydesk || true
+			fi
+
+}
+
+post_remove() {
+	gtk-update-icon-cache -q -t -f usr/share/icons/hicolor
+
+
+	update-desktop-database -q
+}
